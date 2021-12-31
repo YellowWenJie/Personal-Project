@@ -19,7 +19,7 @@
         </div>
       </nav>
       <video
-        src="../assets/video/鬼杀队_x264.mp4"
+        src="../assets/video/gsd.mp4"
         poster="../assets/img/2~A7Y1C}OLB3{M~O96X51DY.5ffb122c.png"
         autoplay
         loop
