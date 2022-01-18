@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <!-- <div id="nav">
-      <router-link to="/">Home</router-link>|
+      <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </div>-->
     <router-view />
@@ -9,19 +9,15 @@
 </template>
 
 <style lang="less">
-:root {
-  --black: #333;
-  --white: #fff;
-}
 * {
   margin: 0;
   padding: 0;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
   box-sizing: border-box;
   font-family: "Sans-serif", sans-serif;
 }
-
+li {
+  list-style: none;
+}
 // #app {
 //   font-family: Avenir, Helvetica, Arial, sans-serif;
 //   -webkit-font-smoothing: antialiased;

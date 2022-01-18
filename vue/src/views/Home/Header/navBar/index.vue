@@ -140,6 +140,7 @@ export default {
 
 <style lang="less" scoped>
 nav {
+  z-index: 8;
   position: relative;
   width: 100%;
   height: 60px;
@@ -155,6 +156,7 @@ nav {
     transition: 0.5s;
   }
   .log {
+    user-select: none;
     display: flex;
     align-items: center;
     height: 60px;

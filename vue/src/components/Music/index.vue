@@ -1,54 +1,166 @@
 <template>
   <div class="music">
-    <div class="player">
+    <div class="player" :class="{play}" @click="plays">
       <svg
-        t="1641568487242"
+        t="1641647038822"
         class="icon"
         viewBox="0 0 1024 1024"
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
-        p-id="2790"
+        p-id="5964"
         width="200"
         height="200"
       >
         <path
-          d="M772.7 217.7a32.2 32.1 0 1 0 64.4 0 32.2 32.1 0 1 0-64.4 0Z"
-          fill="#4D4D4D"
-          p-id="2791"
+          d="M852.5 533.9L279 864.7c-11.9 6.9-27.2 2.8-34.1-9.1-2.2-3.8-3.3-8.1-3.3-12.5V181.5c0-13.8 11.2-24.9 24.9-24.9 4.4 0 8.7 1.2 12.5 3.3l573.4 330.8c11.9 6.9 16 22.1 9.1 34.1-2.1 3.8-5.2 6.9-9 9.1z"
+          p-id="5965"
         />
+      </svg>
+      <svg
+        t="1641646446996"
+        class="icon"
+        viewBox="0 0 1024 1024"
+        version="1.1"
+        xmlns="http://www.w3.org/2000/svg"
+        p-id="5031"
+        width="200"
+        height="200"
+      >
         <path
-          d="M415.8 679.9c5.9 0 11.5-1.6 16.2-4.5l231.1-134.6c10.9-5.2 18.5-16.3 18.5-29.2 0-11.9-6.4-22.3-16-27.8L439.7 352.2c-5.8-6.7-14.4-10.9-23.9-10.9-17.6 0-31.8 14.4-31.8 32.1 0 0.6 0 1.2 0.1 1.8l-0.4 0.2 0.5 269c-0.1 1.1-0.2 2.2-0.2 3.4 0 17.7 14.3 32.1 31.8 32.1z"
-          fill="#4D4D4D"
-          p-id="2792"
-        />
-        <path
-          d="M909.8 306.6c-5.4-10.5-16.3-17.8-28.9-17.8-17.8 0-32.2 14.4-32.2 32.1 0 6 1.7 11.7 4.6 16.5l-0.1 0.1c26.9 52.4 42.1 111.8 42.1 174.7 0 211.6-171.6 383.2-383.2 383.2S128.8 723.8 128.8 512.2 300.4 129.1 512 129.1c62.5 0 121.5 15 173.6 41.5l0.2-0.4c4.6 2.6 10 4.1 15.7 4.1 17.8 0 32.2-14.4 32.2-32.1 0-13.1-7.9-24.4-19.3-29.4C653.6 81.9 584.9 64.5 512 64.5 264.7 64.5 64.3 265 64.3 512.2S264.7 959.9 512 959.9s447.7-200.4 447.7-447.7c0-74.1-18-144-49.9-205.6z"
-          fill="#4D4D4D"
-          p-id="2793"
+          d="M349.866667 149.333333h-14.933334c-21.333333 0-36.266667 14.933333-36.266666 34.133334v654.933333c0 19.2 14.933333 34.133333 34.133333 34.133333h14.933333c19.2 0 34.133333-14.933333 34.133334-34.133333V183.466667c2.133333-19.2-12.8-34.133333-32-34.133334z m341.333333 0h-14.933333c-21.333333 0-36.266667 14.933333-36.266667 34.133334v654.933333c0 19.2 14.933333 34.133333 34.133333 34.133333h14.933334c19.2 0 34.133333-14.933333 34.133333-34.133333V183.466667c2.133333-19.2-12.8-34.133333-32-34.133334z"
+          p-id="5032"
         />
       </svg>
     </div>
+    <div class="describe"></div>
+    <div class="details"></div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      play: false,
+    };
+  },
+  methods: {
+    plays() {
+      this.play = !this.play;
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>
 .music {
-  z-index: 8;
-  position: fixed;
-  bottom: 2%;
-  background-color: rgb(18, 233, 204);
-  width: 80px;
-  height: 80px;
-  border: 5px solid rgb(255, 255, 255);
-  border-radius: 50%;
   .player {
+    z-index: 8;
+    position: fixed;
+    bottom: 1%;
+    left: 1%;
+    background-color: rgb(18, 233, 204);
+    width: 80px;
+    height: 80px;
+    border: 5px solid rgb(255, 255, 255);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 1s;
     svg {
-      width: 100%;
-      height: 100%;
+      width: 60%;
+      height: 60%;
+      &:first-of-type {
+        display: block;
+      }
+      &:last-of-type {
+        display: none;
+      }
+    }
+    &.play {
+      svg {
+        &:first-of-type {
+          display: none;
+        }
+        &:last-of-type {
+          display: block;
+        }
+      }
+    }
+  }
+  .describe {
+    z-index: 7;
+    position: fixed;
+    bottom: 1%;
+    left: -50%;
+    width: 200px;
+    height: 60px;
+    background-color: rgb(250, 248, 248);
+    border-radius: 15px;
+    border: 1px solid rgb(0, 0, 0);
+    transition: all 1s ease;
+  }
+  .details {
+    // z-index: 6;
+    // position: fixed;
+    // bottom: 8%;
+    // left: 3%;
+    width: 160px;
+    height: 0px;
+    // display: none;
+    // transition: all 2s;
+    // background-color: rgb(250, 248, 248);
+  }
+
+  &:hover {
+    & .describe {
+      left: 1%;
+
+      // animation: describe 1s ease 0s forwards;
+    }
+    & .details {
+      z-index: 6;
+      position: fixed;
+      bottom: 8%;
+      left: 3%;
+      width: 160px;
+      height: 100px;
+      display: block;
+      transition: all 2s;
+      transition-delay: 0.5s;
+      background-color: rgb(250, 248, 248);
+      // animation: active 1s ease 0.5s forwards;
+    }
+    & .player {
+      bottom: 2%;
+    }
+  }
+}
+// @keyframes active {
+//   0% {
+//     height: 0px;
+//   }
+//   100% {
+//     height: 100px;
+//   }
+// }
+@media screen and (max-width: 768px) {
+  .music {
+    .player {
+      left: -6%;
+    }
+    .describe {
+      display: none;
+    }
+
+    &:hover {
+      & .player {
+        left: 1%;
+      }
+      .details {
+        display: none;
+      }
     }
   }
 }

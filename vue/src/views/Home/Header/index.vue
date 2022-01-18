@@ -1,6 +1,7 @@
 <template>
-  <header>
+  <header ref="header">
     <navBar @activeNavigation="activeNavigation" />
+    <headerCenter :headerHeight="headerHeight" />
     <navGation :GrayBackground="GrayBackground" />
   </header>
 </template>
@@ -8,16 +9,25 @@
 <script>
 import navBar from "./navBar";
 import navGation from "./navGation";
+import headerCenter from "./headerCenter";
 export default {
   props: ["GrayBackground"],
-  components: { navBar, navGation },
+  components: { navBar, navGation, headerCenter },
+  data() {
+    return {
+      headerHeight: "",
+    };
+  },
   methods: {
     activeNavigation(value) {
       this.$emit("activeNavigation", value);
     },
+    // handleScroll(e) {
+    //   this.headerHeight = this.$refs.header.offsetHeight;
+    // },
   },
   mounted() {
-    //通知父组件修改背景色
+    window.addEventListener("scroll", this.handleScroll, true);
   },
 };
 </script>
@@ -26,6 +36,5 @@ export default {
 header {
   position: relative;
   height: 100vh;
-  background-color: rgb(238, 73, 73);
 }
 </style>
