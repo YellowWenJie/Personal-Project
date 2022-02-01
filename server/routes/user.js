@@ -14,5 +14,5 @@ router.post("/reguser", regUser);
 //   ctx.body = "done";
 // });
 // 登录
-router.get("/login", login);
+router.post("/login", login);
 module.exports = router;
