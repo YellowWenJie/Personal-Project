@@ -1,7 +1,7 @@
 import { reqlist } from "../../api/Home/index";
 
 const state = {
-  blogLists: []
+  blogList: []
 };
 //actions可以书写自己的业务逻辑，最后提交到mutations
 const actions = {
@@ -16,8 +16,8 @@ const actions = {
 };
 //mutations修改state的唯一手段
 const mutations = {
-  BLOGLIST(state, blogList) {
-    state.blogLists = blogList;
+  BLOGLIST(state, result) {
+    state.blogList = result;
   }
 };
 //getters理解为计算属性

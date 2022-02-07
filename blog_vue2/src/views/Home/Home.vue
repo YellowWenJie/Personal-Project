@@ -1,37 +1,27 @@
 <template>
-  <div class="home">
-    <button @click="getlist">请求</button>
-    <h1>{{blogList}}</h1>
-    <h1>{{blogLists}}</h1>
-  </div>
+  <div class="home"></div>
 </template>
 
 <script>
 import requests from "../../api/ajax";
-
 // @ is an alias to /src
 import { mapState } from "vuex";
 export default {
   name: "Home",
   data() {
-    return {
-      blogLists: "123",
-    };
+    return {};
   },
-  components: {},
-  methods: {
-    async getlist() {
-      this.$store.dispatch("blogList");
-      const reqlist = await requests({ url: "blog/blog", method: "get" });
-      this.blogLists = reqlist;
-      // console.log(reqlist);
-      // console.log(blogList);
-    },
+  methods: {},
+  mounted() {
+    // 获取所有博客信息
+    // this.$store.dispatch("blogList");
   },
   computed: {
     ...mapState({
-      blogList: (state) => state.home.blogLists,
+      // blogList: (state) => state.home.blogList,
     }),
   },
 };
 </script>
+<style lang="less"scoped>
+</style>

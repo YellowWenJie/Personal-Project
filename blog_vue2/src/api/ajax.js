@@ -12,7 +12,7 @@ import "nprogress/nprogress.css";
 const requests = axios.create({
   //配置对象
   //基础路径，发送请求的时候，路径当中会出现/
-  baseURL: "http://localhost:8080/",
+  baseURL: "http://localhost:8000/",
   //代表请求超时的时间
   timeout: 5000
 });
@@ -35,7 +35,7 @@ requests.interceptors.response.use(
   },
   error => {
     //响应失败的回调函数
-    return Promise.reject(new Error("请求响应失败！"));
+    return Promise.reject(new Error(error));
   }
 );
 
