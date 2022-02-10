@@ -261,7 +261,7 @@
         </svg>
       </div>
     </div>
-    <div class="clickPage">
+    <div class="clickPage" @click="clickPage">
       <svg
         t="1642261235330"
         class="icon"
@@ -310,7 +310,10 @@ export default {
       // 视窗高度;
       let baseclientHeight = document.documentElement.clientHeight;
       //盒子高度
-      let baseHeight = this.$refs.base.offsetHeight;
+      let baseHeight;
+      if (this.base) {
+        baseHeight = this.$refs.base.offsetHeight;
+      }
       //总共盒子高度
       let bodyHeight = document.body.offsetHeight;
       //盒子相差顶部距离
@@ -325,6 +328,11 @@ export default {
       // console.log(baseTop);
       // console.log(bodyHeight);
       // console.log(this.headerHeight);
+    },
+    clickPage() {
+      // 视窗高度;
+      let baseclientHeight = document.documentElement.clientHeight;
+      window.scrollBy(0, baseclientHeight);
     },
 
     // aaa() {

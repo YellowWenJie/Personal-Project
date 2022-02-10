@@ -3,16 +3,17 @@
     <Music />
     <div v-bind:class="{ GrayBackground}" @click="closeNavigation"></div>
     <Header @activeNavigation="activeNavigation" :GrayBackground="GrayBackground" />
-    <div>123</div>
+    <Main />
   </div>
 </template>
 
 <script>
 import Header from "./Header";
+import Main from "./Main";
 import Music from "../../components/Music";
 export default {
   name: "Home",
-  components: { Header, Music },
+  components: { Header, Main, Music },
   data() {
     return {
       GrayBackground: false,
