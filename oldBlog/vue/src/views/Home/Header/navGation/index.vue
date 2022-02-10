@@ -320,7 +320,7 @@ export default {
   display: none;
   position: fixed;
   top: 0;
-  left: -200vh;
+  left: -100vh;
   width: 80%;
   height: 100%;
   background-color: rgb(243, 243, 243);
