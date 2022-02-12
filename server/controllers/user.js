@@ -48,8 +48,9 @@ class UserController {
     if (!realname) {
       realname = NAME_CONF + "_" + Math.floor(random * 1000000);
     }
-    let randomly = Math.floor(random * 10) < 5 ? ".png" : ".webp";
-    let avatar = "/img/avatar/" + Math.floor(random * 10) + randomly;
+    // let randomly = Math.floor(random * 10) < 5 ? ".png" : ".webp";
+    let randomly = require("../model/readFile");
+    let avatar = "/img/avatar/" + randomly();
 
     const sql = `insert into users(username,password,realname,avatar) values ('${username}','${password}','${realname}','${avatar}')`;
     await exec(sql).then(result => {

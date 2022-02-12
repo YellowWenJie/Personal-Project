@@ -35,6 +35,7 @@ app.use(async (ctx, next) => {
   const ms = new Date() - start;
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`);
 });
+
 // 导入配置文件
 const { TOKEN_CONF } = require("./config/index");
 //一定要在路由之前配置解析Token的中间件
@@ -54,11 +55,11 @@ app.use(async (ctx, next) => {
 });
 
 // 使用 .unless({ path: [/^\/api\//] }) 指定哪些接口不需要进行 Token 的身份认证(这里需要注意，secret必须配置algorithms属性)
-// app.use(
-//   koaJWT({ secret: TOKEN_CONF.jwtSecretKey, algorithms: ["HS256"] }).unless({
-//     path: [/^\/api\//]
-//   })
-// );
+app.use(
+  koaJWT({ secret: TOKEN_CONF.jwtSecretKey, algorithms: ["HS256"] }).unless({
+    path: [/^\/api\//]
+  })
+);
 
 // routes
 app.use(user.routes(), user.allowedMethods());

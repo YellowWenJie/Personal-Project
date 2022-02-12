@@ -35,6 +35,7 @@ requests.interceptors.response.use(
   },
   error => {
     //响应失败的回调函数
+    console.error("无法访问服务端");
     return Promise.reject(new Error(error));
   }
 );

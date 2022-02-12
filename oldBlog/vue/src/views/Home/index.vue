@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <goTop />
     <Music />
     <div v-bind:class="{ GrayBackground}" @click="closeNavigation"></div>
     <Header @activeNavigation="activeNavigation" :GrayBackground="GrayBackground" />
@@ -11,9 +12,10 @@
 import Header from "./Header";
 import Main from "./Main";
 import Music from "../../components/Music";
+import goTop from "../../components/goTop";
 export default {
   name: "Home",
-  components: { Header, Main, Music },
+  components: { Header, Main, Music, goTop },
   data() {
     return {
       GrayBackground: false,

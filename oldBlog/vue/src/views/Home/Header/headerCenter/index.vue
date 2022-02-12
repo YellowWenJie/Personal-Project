@@ -332,7 +332,13 @@ export default {
     clickPage() {
       // 视窗高度;
       let baseclientHeight = document.documentElement.clientHeight;
-      window.scrollBy(0, baseclientHeight);
+      // window.scrollBy(0, baseclientHeight);
+      window.scrollBy({
+        left: 0,
+        top: baseclientHeight,
+        // 平滑滚动
+        behavior: "smooth",
+      });
     },
 
     // aaa() {

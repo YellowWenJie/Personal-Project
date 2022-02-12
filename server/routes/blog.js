@@ -1,8 +1,7 @@
 const Router = require("koa-router");
-const { SuccessModel, ErrorModel } = require("../model/resModel");
-
+const { addBlog } = require("../controllers/blog");
+const uploads = require("../model/upload");
 const router = new Router({ prefix: "/blog" });
-router.get("/blog", ctx => {
-  ctx.body = new SuccessModel(ctx.host);
-});
+// 添加博客
+router.post("/add", uploads("avatar", "blogcover"), addBlog);
 module.exports = router;
