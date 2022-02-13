@@ -2,7 +2,7 @@
   <div class="videoBackground">
     <video autoplay loop muted type="mp4" @canplay="canplay">
       <source :src="src2" type="video/mp4" />
-      <source src="../assets/IMG/aotm.png" type="video/mp4" />
+      <source src="../../assets/IMG/aotm.png" type="video/mp4" />
     </video>
     <div class="vedioCanPlay" v-if="vedioCanPlay">
       <img ref="img" alt />

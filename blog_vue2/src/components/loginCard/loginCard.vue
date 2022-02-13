@@ -75,7 +75,7 @@
 </template>
 <script>
 import $ from "jquery";
-import requests from "../api/ajax";
+import requests from "../../api/ajax";
 export default {
   components: {},
   data() {
@@ -256,6 +256,7 @@ export default {
       }
       // 将 token 保存在 session Storage 中
       window.sessionStorage.setItem("token", logins.message);
+
       // 退出登录 清除 token
       // window.sessionStorage.clear();
     },

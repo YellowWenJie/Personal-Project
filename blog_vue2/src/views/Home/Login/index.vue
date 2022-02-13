@@ -7,8 +7,8 @@
 
 <script>
 // @ is an alias to /src
-import videoBackground from "../../../components/videoBackground.vue";
-import loginCard from "../../../components/loginCard.vue";
+import videoBackground from "../../../components/videoBackground/videoBackground.vue";
+import loginCard from "../../../components/loginCard/loginCard.vue";
 export default {
   name: "login",
   data() {
