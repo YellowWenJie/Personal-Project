@@ -29,6 +29,8 @@
     "koa-static": "^5.0.0",
     "koa-views": "^6.2.0",
     "mysql": "^2.18.1",
+    "mysql2": "^2.3.3",
+    "nodemailer": "^6.7.3",
     "pug": "^2.0.3"
   },
   "devDependencies": {
