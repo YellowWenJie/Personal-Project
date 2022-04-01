@@ -28,7 +28,7 @@ var server = http.createServer(app.callback());
 server.listen(port, () => {
   // 如果是生产环境就打印
   if (process.env.NODE_ENV === "dev") {
-    console.log(`http://localhost:${port}`);
+    console.log(`localhost:${port}`);
   }
 });
 server.on("error", onError);

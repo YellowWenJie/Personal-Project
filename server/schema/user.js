@@ -9,21 +9,12 @@
 const Joi = require("joi");
 
 const user = Joi.object({
-  username: Joi.string().alphanum().min(1).max(20).required(),
+  username: Joi.string().alphanum().min(1).max(10).required(),
   password: Joi.string()
     .pattern(/^[\S]{6,12}$/)
-    .required(),
-  realname: Joi.string(),
-});
-
-const email = Joi.object({
-  email: Joi.string()
-    .pattern(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/)
-    .required(),
-  verify: Joi.string().alphanum(),
+    .required()
 });
 
 module.exports = {
-  user,
-  email,
+  user
 };
