@@ -1,12 +1,10 @@
 const bcrypt = require("bcryptjs");
-// 用这个包来生成 Token 字符串
-const jwt = require("jsonwebtoken");
 const { exec } = require("../db/mysql");
 const { SuccessModel, ErrorModel } = require("../model/resModel");
 const { NAME_CONF, TOKEN_CONF } = require("../config/index");
 const { sendEmail } = require("../model/email");
-const { randomString } = require("../model/function");
-
+const { randomString,judge } = require("../model/function");
+const { tokenStr, decryptJWT } = require("../config/jwt");
 // 储存验证码
 let verificationCode = [];
 class UserController {
@@ -51,6 +49,9 @@ class UserController {
     const userinfo = ctx.request.body;
     const email = userinfo.email;
     const verify = userinfo.verify;
+    let realname = userinfo.realname;
+    let username = userinfo.username;
+
     if (!verify && !!email) {
       console.log(verificationCode);
       const sqlStr = `select email from users where email='${email}'`;
@@ -60,7 +61,7 @@ class UserController {
         return;
       }
       let random = randomString();
-      await sendEmail(email, "验证码", random)
+      await sendEmail(email, "注册验证码", random)
         .then((res) => {
           ctx.body = new SuccessModel("验证码发送成功");
           removeCode();
@@ -86,7 +87,6 @@ class UserController {
         }
       }
       if (emailVerificationCode === verify) {
-        let realname = userinfo.realname;
         let randomName = Math.random();
         if (!realname) {
           realname = NAME_CONF + "_" + Math.floor(randomName * 1000000);
@@ -95,8 +95,12 @@ class UserController {
         let randomly = require("../model/readFile");
         let avatar = "/img/avatar/" + randomly();
         let reg_mode = "邮箱注册";
+        let name;
+        if (!username) {
+          name = Math.floor(randomName * 1000000);
+        }
         // const sql = `INSERT INTO users (username,realname,avatar,reg_mode,email) VALUES ('${email}','${realname}','${avatar}','${reg_mode})','${email}'`;
-        const sql = `INSERT INTO users (username,realname,avatar,reg_mode,email) VALUES ('${email}','${realname}','${avatar}','${reg_mode}','1606354739@qq.com')`;
+        const sql = `INSERT INTO users (username,realname,avatar,reg_mode,email) VALUES ('${name}','${realname}','${avatar}','${reg_mode}','1606354739@qq.com')`;
         await exec(sql)
           .then((result) => {
             if (result.length < 1) {
@@ -149,10 +153,37 @@ class UserController {
     // 剔除完毕之后，user 中只保留了用户的 id, username, nickname, email 这四个属性的值
     const user = { ...dataBase[0], password: "" };
     //对用户的信息进行加密，生成token字符串jwj.sign（加密的对象，加密使用到SecretKey的值）
-    const tokenStr = jwt.sign(user, TOKEN_CONF.jwtSecretKey, {
-      expiresIn: TOKEN_CONF.expiresIn,
-    });
-    ctx.body = new SuccessModel("Bearer " + tokenStr);
+    const token = tokenStr(user);
+    ctx.body = new SuccessModel("Bearer " + token);
+  }
+  // 更新用户信息
+  static async updateUser(ctx) {
+    const user = decryptJWT(ctx);
+    const userinfo = ctx.request.body;
+    let username = judge(userinfo,'username');
+    let password = judge(userinfo,'password');
+    let realname = judge(userinfo,'realname');
+    let avatar;
+    try {
+      avatar = judge(userinfo,'avatar');
+    } catch (e) {
+      avatar = ` `;
+    }
+    let email = judge(userinfo,'email')
+    let mobile = judge(userinfo,'mobile')
+    const sql = `update users set ${username} ${password} ${realname} ${avatar} ${email} ${mobile} where id = ${user.id}`;
+    await exec(sql)
+          .then((result) => {
+            if (result.length < 1) {
+              ctx.body = new ErrorModel("添加失败");
+            } else {
+              ctx.body = new SuccessModel("注册成功");
+              removeCode();
+            }
+          })
+          .catch((err) => {
+            ctx.body = new ErrorModel(err);
+          });
   }
 }
 

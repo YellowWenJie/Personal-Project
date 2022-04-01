@@ -9,5 +9,22 @@ const randomString = (len = 6) => {
 
   return data;
 };
+// 修改数据时可以随便传多少参数
+const judge = (userinfo={}, name) => {
+  if (!!userinfo[name]) {
+    let arr = Object.keys(userinfo);
+    if (arr.length > 1) {
+      if (name == arr[arr.length - 1]) {
+        return `${name} = "${userinfo[name]}"`;
+      } else {
+        return `${name} = "${userinfo[name]}",`;
+      }
+    } else {
+      return `${name} = "${userinfo[name]}"`;
+    }
+  } else {
+    return ` `;
+  }
+}
 
-module.exports = { randomString };
+module.exports = { randomString,judge };

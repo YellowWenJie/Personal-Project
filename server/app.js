@@ -34,7 +34,7 @@ app.use(async (ctx, next) => {
 });
 
 //一定要在路由之前配置解析Token的中间件
-const JWT = require("./config/jwt");
+const { verifyJWT } = require("./config/jwt");
 // 身份认证错误中间件
 app.use(async (ctx, next) => {
   return next().catch((err) => {
@@ -46,8 +46,7 @@ app.use(async (ctx, next) => {
     }
   });
 });
-
-app.use(JWT);
+app.use(verifyJWT);
 
 const user = require("./routes/user");
 const blog = require("./routes/blog");

@@ -9,7 +9,7 @@
 const Joi = require("joi");
 
 const user = Joi.object({
-  username: Joi.string().alphanum().min(1).max(18).required(),
+  username: Joi.string().alphanum().min(1).max(20).required(),
   password: Joi.string()
     .pattern(/^[\S]{6,12}$/)
     .required(),
