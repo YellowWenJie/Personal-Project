@@ -1,8 +1,11 @@
-const mysql = require("mysql");
+const mysql = require("mysql2");
 const { MYSQL_CONF } = require("../config/index");
+
 const con = mysql.createConnection(MYSQL_CONF);
 //开始连接
-con.connect();
+con.connect((err) => {
+  if (err) throw err;
+});
 
 //统一执行 sql 的函数
 function exec(sql) {
