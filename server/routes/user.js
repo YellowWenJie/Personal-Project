@@ -4,7 +4,8 @@ const {
   login,
   regEmailUser,
   updateUser,
-  emailLogin
+  emailLogin,
+  lodash
 } = require("../controllers/user");
 const schema = require("../model/schema");
 // 导入 Joi 来定义验证规则
@@ -25,5 +26,8 @@ router.post("/emailLogin",schema("post",email),emailLogin);
 
 // 更新用户基本信息
 router.post("/updateUser", uploads("avatar", "avatar"), updateUser);
+
+// lodash test
+router.post("/lodash", lodash);
 
 module.exports = router;

@@ -1,4 +1,5 @@
 const bcrypt = require("bcryptjs");
+const _ = require("lodash")
 const { exec } = require("../db/mysql");
 const { SuccessModel, ErrorModel } = require("../model/resModel");
 const { NAME_CONF } = require("../config/index");
@@ -256,7 +257,15 @@ class UserController {
           });
   }
 
-  // 
+  // lodash test
+  static async lodash(ctx){
+    let arr = Object.keys(ctx.request.body);
+    const body = _.pick(
+      ctx.request.body,
+      ...arr
+    );
+    ctx.body = body
+  }
 }
 
 module.exports = UserController;

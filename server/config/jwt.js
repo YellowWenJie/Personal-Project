@@ -16,7 +16,7 @@ const verifyJWT = koaJWT({
   secret: TOKEN_CONF.jwtSecretKey,
   algorithms: ["HS256"],
 }).unless({
-  path: [/\/reguser/, /\/regEmailUse/, /\/login/, /\/emailLogin/],
+  path: [/\/reguser/, /\/regEmailUse/, /\/login/, /\/emailLogin/, /\/lodash/],
 });
 
 // 解码
