@@ -4,6 +4,7 @@ const {
   login,
   regEmailUser,
   updateUser,
+  emailLogin
 } = require("../controllers/user");
 const schema = require("../model/schema");
 // 导入 Joi 来定义验证规则
@@ -18,6 +19,9 @@ router.post("/regEmailUser", schema("post", email), regEmailUser);
 
 // 普通登录
 router.post("/login", schema("post", user), login);
+
+// 邮箱登陆
+router.post("/emailLogin",schema("post",email),emailLogin);
 
 // 更新用户基本信息
 router.post("/updateUser", uploads("avatar", "avatar"), updateUser);

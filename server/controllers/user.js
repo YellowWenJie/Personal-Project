@@ -1,12 +1,18 @@
 const bcrypt = require("bcryptjs");
 const { exec } = require("../db/mysql");
 const { SuccessModel, ErrorModel } = require("../model/resModel");
-const { NAME_CONF, TOKEN_CONF } = require("../config/index");
+const { NAME_CONF } = require("../config/index");
 const { sendEmail } = require("../model/email");
 const { randomString,judge } = require("../model/function");
 const { tokenStr, decryptJWT } = require("../config/jwt");
-// 储存验证码
-let verificationCode = [];
+// 储存邮箱注册验证码
+let reqVerificationCode = [];
+// 储存邮箱登陆验证码
+let loginEmailVerificationCode = [
+  {
+    email:"1606354739@qq.com",
+    verify:"666666"
+  }];
 class UserController {
   // 普通注册
   static async regUser(ctx) {
@@ -19,7 +25,7 @@ class UserController {
       ctx.body = new ErrorModel("用户名重复，重新取个名字吧");
       return;
     }
-    //调用bcrypt.hashSync(需要加密的值，10)10代表加密的程度对密码进行加密
+    //调用 bcrypt.hashSync (需要加密的值，10)10代表加密的程度对密码进行加密
     const password = bcrypt.hashSync(userinfo.password, 10);
     let random = Math.random();
     if (!realname) {
@@ -29,8 +35,8 @@ class UserController {
     let randomly = require("../model/readFile");
     let avatar = "/img/avatar/" + randomly();
     let reg_mode = "普通注册";
-
-    const sql = `INSERT INTO users (username,password,realname,avatar,reg_mode) VALUES ('${username}','${password}','${realname}','${avatar}','${reg_mode}')`;
+    let reg_time = new Date()
+    const sql = `INSERT INTO users (username,password,realname,avatar,reg_mode,reg_time) VALUES ('${username}','${password}','${realname}','${avatar}','${reg_mode}','${reg_time}')`;
     await exec(sql)
       .then((result) => {
         if (result.length < 1) {
@@ -53,7 +59,7 @@ class UserController {
     let username = userinfo.username;
 
     if (!verify && !!email) {
-      console.log(verificationCode);
+      console.log(reqVerificationCode);
       const sqlStr = `select email from users where email='${email}'`;
       let dataBaseName = await exec(sqlStr);
       if (dataBaseName.length > 0) {
@@ -65,7 +71,7 @@ class UserController {
         .then((res) => {
           ctx.body = new SuccessModel("验证码发送成功");
           removeCode();
-          verificationCode.push({
+          reqVerificationCode.push({
             email: email,
             verify: random,
           });
@@ -81,9 +87,9 @@ class UserController {
         return;
       }
       let emailVerificationCode;
-      for (let i = 0; i < verificationCode.length; i++) {
-        if (verificationCode[i].email === email) {
-          emailVerificationCode = verificationCode[i].verify;
+      for (let i = 0; i < reqVerificationCode.length; i++) {
+        if (reqVerificationCode[i].email === email) {
+          emailVerificationCode = reqVerificationCode[i].verify;
         }
       }
       if (emailVerificationCode === verify) {
@@ -95,12 +101,13 @@ class UserController {
         let randomly = require("../model/readFile");
         let avatar = "/img/avatar/" + randomly();
         let reg_mode = "邮箱注册";
+        let reg_time = new Date()
         let name;
         if (!username) {
           name = Math.floor(randomName * 1000000);
         }
         // const sql = `INSERT INTO users (username,realname,avatar,reg_mode,email) VALUES ('${email}','${realname}','${avatar}','${reg_mode})','${email}'`;
-        const sql = `INSERT INTO users (username,realname,avatar,reg_mode,email) VALUES ('${name}','${realname}','${avatar}','${reg_mode}','1606354739@qq.com')`;
+        const sql = `INSERT INTO users (username,realname,avatar,reg_mode,email,reg_time) VALUES ('${name}','${realname}','${avatar}','${reg_mode}','${email}',${reg_time})`;
         await exec(sql)
           .then((result) => {
             if (result.length < 1) {
@@ -119,18 +126,18 @@ class UserController {
     }
     function removeCode() {
       // 去重
-      let arr = Array.from(new Set(verificationCode));
+      let arr = Array.from(new Set(reqVerificationCode));
       // 去除这个 email 中相同的验证码
       for (let i = 0; i < arr.length; i++) {
         if (arr[i].email === email) {
           arr.splice(i, 1);
         }
       }
-      verificationCode = arr;
+      reqVerificationCode = arr;
     }
   }
 
-  // 登录
+  // 普通登录
   static async login(ctx) {
     // 获取表单数据
     const userinfo = ctx.request.body;
@@ -156,6 +163,69 @@ class UserController {
     const token = tokenStr(user);
     ctx.body = new SuccessModel("Bearer " + token);
   }
+
+  // 邮箱登陆
+  static async emailLogin(ctx) {
+    const userinfo = ctx.request.body;
+    const email = userinfo.email;
+    const verify = userinfo.verify;
+    if (!verify && !!email) {
+      const sqlStr = `select email from users where email='${email}'`;
+      let dataBaseName = await exec(sqlStr);
+      if (dataBaseName.length < 0) {
+        ctx.body = new ErrorModel("你还未注册，注册一个账号再登陆吧！");
+        return;
+      } else {
+        let random = randomString();
+        await sendEmail(email, "登陆验证码", random)
+          .then((res) => {
+            ctx.body = new SuccessModel('验证码发送成功');
+            removeCode();
+            loginEmailVerificationCode.push({
+              email: email,
+              verify: random,
+            });
+          })
+          .catch((e) => {
+            console.log(e);
+            ctx.body = new ErrorModel('验证码发送失败');
+          });
+       } 
+    } else if (!!verify && !!email) {
+      let emailVerificationCode;
+      for (let i = 0; i < loginEmailVerificationCode.length; i++) {
+        if (loginEmailVerificationCode[i].email === email) {
+          emailVerificationCode = loginEmailVerificationCode[i].verify;
+        }
+      }
+      if (emailVerificationCode === verify) {
+        const sqlStr = `select * from users where email='${email}'`;
+        console.log(email);
+        await exec(sqlStr).then(res=>{
+          const user = { ...res[0], password: "" };
+          const token = tokenStr(user);
+          ctx.body = new SuccessModel("Bearer " + token);
+          removeCode();
+        })        
+      } else {
+        ctx.body = new ErrorModel("登陆失败，验证码错误");
+      }
+    } else {
+      ctx.body = new ErrorModel("请输入您的邮箱");
+    }
+    function removeCode() {
+      // 去重
+      let arr = Array.from(new Set(loginEmailVerificationCode));
+      // 去除这个 email 中相同的验证码
+      for (let i = 0; i < arr.length; i++) {
+        if (arr[i].email === email) {
+          arr.splice(i, 1);
+        }
+      }
+      loginEmailVerificationCode = arr;
+    }
+  }
+
   // 更新用户信息
   static async updateUser(ctx) {
     const user = decryptJWT(ctx);
@@ -185,6 +255,8 @@ class UserController {
             ctx.body = new ErrorModel(err);
           });
   }
+
+  // 
 }
 
 module.exports = UserController;

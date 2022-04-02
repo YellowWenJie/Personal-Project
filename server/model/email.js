@@ -15,7 +15,7 @@ let transporter = nodemailer.createTransport({
 // 获取当前时间
 let sendTime = new Date();
 const sendEmail = (to, subject, message) => {
-  return new Promise((result, reject) => {
+  return new Promise((resolve, reject) => {
     // 填写发件人, 收件人
     let mailOptions = {
       // 发件人地址
@@ -51,12 +51,12 @@ const sendEmail = (to, subject, message) => {
     };
     nodemailer.createTestAccount((err, account) => {});
     // 发送邮件
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.log(error);
-        reject(error);
+    transporter.sendMail(mailOptions, (err, info) => {
+      if (err!==null) {
+        console.log(err);
+        reject(err);
       }
-      result("邮件发送成功");
+      resolve(info);
     });
   });
 };

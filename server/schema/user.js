@@ -20,7 +20,7 @@ const email = Joi.object({
   email: Joi.string()
     .pattern(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/)
     .required(),
-  verify: Joi.string().alphanum(),
+  verify: Joi.string().alphanum().min(6).max(6),
 });
 
 module.exports = {
