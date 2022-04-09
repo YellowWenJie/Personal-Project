@@ -1,0 +1,26 @@
+{
+  "name": "server-pro",
+  "version": "1.0.0",
+  "description": "Server Pro",
+  "main": "app.ts",
+  "scripts": {
+    "start": "npm run serve",
+    "serve": "nodemon src/bin/www.ts --config nodemon.json",
+    "build": "npm run tslint && npm run build-ts",
+    "build-ts": "tsc",
+    "watch": "npm run tslint && npm run watch-ts",
+    "watch-ts": "tsc -w",
+    "tslint": "tslint -c tslint.json -p tsconfig.json"
+  },
+  "author": "YellowWenJie",
+  "license": "ISC",
+  "dependencies": {
+    "debug": "^4.3.4",
+    "http": "^0.0.1-security",
+    "koa": "^2.13.4"
+  },
+  "devDependencies": {
+    "@types/debug": "^4.1.7",
+    "@types/koa": "^2.13.4"
+  }
+}

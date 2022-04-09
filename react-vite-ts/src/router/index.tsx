@@ -1,14 +1,14 @@
 import React, { Suspense, useState } from 'react'
 import { router, unAuthRouter } from './router'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import LoadingPro from '../components/LoadingPro'
+import Loading from '../components/Loading'
 
 function View() {
   const [count, setCount] = useState(0)
   return (
     <>
       {/* suspense 配合 router 的 lazy */}
-      <Suspense fallback={<LoadingPro />}>
+      <Suspense fallback={<Loading />}>
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Navigate to="/dashboard" />} />
